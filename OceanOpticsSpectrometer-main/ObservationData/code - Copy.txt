@@ -1,0 +1,22 @@
+% read CCD quantum efficiency file (%)
+fileDir_CCD = '..\04_Calibration\Detector\';
+fileName_CCD = 'quantum_efficiency';
+[wl_CCD, int_CCD] = ReadTxtFiles(fileDir_CCD, fileName_CCD, wavelength_range);
+
+% read diffuser transmission file (%)
+fileDir_DFT = '..\04_Calibration\Diffuser\';
+fileName_DFT = 'diffuser_T_1.25mm';
+[wl_DFT, int_DFT] = ReadTxtFiles(fileDir_DFT, fileName_DFT, wavelength_range);
+
+% read grating relative efficiency file (%)
+fileDir_GRE_H6 = '..\04_Calibration\Grating\';
+fileName_GRE_H6 = 'grating_H6';
+[wl_GRE_H6, int_GRE_H6] = ReadTxtFiles(fileDir_GRE_H6, fileName_GRE_H6, wavelength_range);
+
+fileDir_GRE_H11 = '..\04_Calibration\Grating\';
+fileName_GRE_H11 = 'grating_H11';
+[wl_GRE_H11, int_GRE_H11] = ReadTxtFiles(fileDir_GRE_H11, fileName_GRE_H11, wavelength_range);
+
+% calibrate digital count values
+int_ref = (int_ref - int_rnoise) ./ int_CCD ./ int_DFT ./ int_GRE_H6 / (cos(SZA/180*pi));
+int_sample = (int_sample - int_snoise) ./ int_CCD ./ int_GRE_H11;
